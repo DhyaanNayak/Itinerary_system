@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/main.css">
+  <script type="module" src="./script/onboarding.js"></script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places"></script>
+
+  <title>Trip Planner</title>
+</head>
+
+<body>
+
+  
+  <div class="onboarding-overlay"></div>
+
+  <div class="onboarding-container">
+    <div class="content">
+      <a href="#" class="skip-btn">Skip</a>
+      <div class="dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="image">
+            <img class="overImg" src="/images/1.png">
+          </div>
+
+          <h3>Step 1</h3>
+          <h2>
+            Above shows the start page. Select the place you want to visit and tell us the dates. We will sort the rest out!
+          </h2>
+
+        </div>
+
+        <div class="step">
+          <div class="image">
+            <img class="overImg" src="/images/2.png">
+          </div>
+
+          <h3>Step 2</h3>
+          <h2>
+            Filter The places you would like to visit. You can select Attractions, Museum, Hotels, Shop, food, Cafe and Drinks categories.
+          </h2>
+
+        </div>
+
+        <div class="step">
+          <div class="image">
+            <img class="overImg" src="/images/3.png">
+          </div>
+
+          <h3>Step 3</h3>
+          <h2>
+            Add the place in the Place Bucket and start planning your itinerary.
+          </h2>
+
+        </div>
+
+        <div class="step">
+          <div class="image">
+            <img class="overImg" src="/images/4.png">
+          </div>
+
+          <h3>Step 4</h3>
+          <h2>
+            Click on the Place Bucket and view the possible route to travel.
+          </h2>
+
+        </div>
+
+        <div class="step">
+          <div class="image">
+            <img class="overImg" src="/images/5.png">
+          </div>
+
+          <h3>Step 5</h3>
+          <h2>
+            Click on the mic button to ask the AI assistant for recommendations of your interest.
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <button class="next-btn">Next</button>
+
+    </div>
+  </div>
+
+
+  <div class="popup" id="popup-1">
+    <div class="overlay"></div>
+    <div class="content">
+        <div class="close-btn" onclick="togglepopup()">&times;</div>
+        <h1>Need Help?</h1>
+        <h2>You seem to be stuck. How can we help you?</h2>
+        <div class="button-container">
+            <button class="onboarding-btnn" onclick="togglepopup()">Show Tutorial</button>
+            <button class="popup-btn" onclick="popuprecognition()">Speak with AI assistant</button>
+        </div>
+    </div>
+  </div>
+  
+ <section class="modal" id="search-modal">
+    <div class="modal-content">
+      <div class="init-content-container" style="display: none;">
+        <div class="intro-language">
+          <h1>Discover awesome places in your destination & plan your trip by the day</h1>
+          <p>Explore popular places on the map for sightseeing, food, drinks and more</p>
+          <p>Drag and drop places in your planner for map routing</p>
+        </div>
+        <form id="init-form">
+          <div class="input-city-container">
+            <label for="input-city">City: </label>
+            <input type="text" name="input-city", hidden="city" id="input-city" required>
+          </div>
+          <div class="input-date-container">
+            <label for="start-date">From: </label>
+            <input type="date" name="start-date" id="start-date" required>
+            <label for="end-date">To: </label>
+            <input type="date" name="end-date" id="end-date" required>
+          </div>
+          <button id="search-submit">Start Exploring</button>
+          <div><a class='show-itineraries'>Existing itineraries</a></div>
+        </form>
+      </div>
+      <div class="itinerary-container">
+        <ul class="itinerary-list"></ul>
+        <a id="itinerary-back">Back</a>
+      </div>
+    </div>
+  </section>
+
+ 
+  <main class="main-container">
+    <div class="chat-mic-container">
+        <div class="chatbox-container">
+          <!-- User input messages will be appended here -->
+        </div>
+        <button class="microphone-btn2" onclick="startRecognition()">&#127908;</button>
+    </div>
+    <section class="planner-container">
+      <header>
+        <div class="logo">
+          <span>Itinerary Planner</span>
+        </div>
+        <button class="btn btn-pink show-itineraries">Existing Itineraries</button>
+        <button class="onboarding-btn">Show Demo</button>
+      </header>
+      <div class="planner-content">
+        <div class="planner-box bucket">
+          <div class="title"><p>Place Bucket</p></div>
+          <div class="planner-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="place-container">
+      <div class="place-overview">
+        <div class="place-filter">
+          <div class="filter-buttons">
+            <li class="filter-li" id="see"><a class="btn button" href="#">Attraction</a></li>
+            <li class="filter-li" id="museum"><a class="btn button" href="#">Museum</a></li>
+            <li class="filter-li" id="hotel"><a class="btn button" href="#">Hotel</a></li>
+            <li class="filter-li" id="mall"><a class="btn button" href="#">Shop</a></li>
+            <li class="filter-li" id="dining"><a class="btn button" href="#">Food</a></li>
+            <li class="filter-li" id="cafe"><a class="btn button" href="#">Cafe</a></li>
+            <li class="filter-li" id="bar"><a class="btn button" href="#">Drinks</a></li>
+          </div>
+          <div class="action-links" id="filter-actions">
+          <input type="text" name="input-place" id="input-place">
+          <button id="search">Search</button>
+            <a id="clear-filter">Clear</a>
+            <a id="apply-filter">Apply</a>
+          </div>
+        </div>
+        <div id="place-num"></div>
+        <div class="place-list"></div>
+      </div>
+
+    </section>
+
+    <section id="map">
+     </section>
+
+  </main>
+
+    <script type="module" src="./script/index.js"></script>
+    <script src="./script/chatbot.js"></script>
+    <script src="./script/idletimer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>
